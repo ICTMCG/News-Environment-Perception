@@ -11,7 +11,7 @@ This is the official repository of the paper:
 # Citation
 ```
 @inproceedings{NEP,
-    title = "Integrating Semantic and Structural Information with Graph Convolutional Network for Controversy Detection",
+    title = "Zoom Out and Observe: News Environment Perception for Fake News Detection",
     author = "Sheng, Qiang  and
       Cao, Juan  and
       Zhang, Xueyao  and
