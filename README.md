@@ -7,6 +7,8 @@ This is the official repository of the paper:
 > Qiang Sheng, Juan Cao, Xueyao Zhang, Rundong Li, Danding Wang, and Yongchun Zhu
 >
 > *Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (ACL 2022)*
+> 
+> Preprint: https://arxiv.org/abs/2203.10885
 
 # Citation
 ```
