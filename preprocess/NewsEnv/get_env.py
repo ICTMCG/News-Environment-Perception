@@ -1,0 +1,1 @@
+# 此处的代码，需要能够生成类似于：/data/zhangxueyao/FactChecking/NewsEnv-private/preprocess/SimCSE/data/Weibo/post-env 路径下的各个数据文件。

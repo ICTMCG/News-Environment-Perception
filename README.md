@@ -18,25 +18,44 @@ This is the official repository of the paper:
 
 The experimental datasets where can be seen in `dataset` folder, including the [Chinese Dataset](https://github.com/ICTMCG/News-Environment-Perception/tree/main/dataset/Chinese), and the [English Dataset](https://github.com/ICTMCG/News-Environment-Perception/tree/main/dataset/English). Note that you can download the datasets only after an ["Application to Use the Datasets for XXXXXX"]() has been submitted.
 
-## Code
+### Code
 
 ### Key Requirements
 
 ```
 python==3.6.10
 torch==1.6.0
+gensim==3.8.3
 transformers==3.2.0
 ```
 
-### Preparation
+## Preparation
 
-#### Step1: Construct the macro & micro environment
+#### Step 1: Obtain the representations of posts and news environment items
 
-BM25
+Obtain all the texts' representation by the **SimCSE** model:
 
-#### Step 2: Obtain the representations of posts and news environment items
+```
+cd preprocess/SimCSE
 
-SimCSE
+# Configure the dataset
+sh run.sh
+```
+
+After that, the posts' and news' representations will be saved in `data/[dataset]/post` and `data/[dataset]/news`.
+
+#### Step 2: Construct the macro & micro environment
+
+Get the macro environment and rank its internal items by similarites:
+
+```
+cd preprocess/NewsEnv
+
+# Configure the specific T days of the macro environment
+sh run.sh
+```
+
+After that, a post's macro environment and its similarity with every news items will be saved in `data/[dataset]`.
 
 #### Step 3: Prepare for the specific detectors
 
