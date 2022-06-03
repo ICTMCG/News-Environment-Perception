@@ -10,3 +10,5 @@
 *.out
 
 preprocess/playground.ipynb
+preprocess/SimCSE/train_SimCSE/data
+preprocess/SimCSE/train_SimCSE/ckpts
