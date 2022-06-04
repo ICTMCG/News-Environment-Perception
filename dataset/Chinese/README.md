@@ -22,11 +22,10 @@ The news environment items are saved in `news/news.json`. In the file:
 - the `content` identifies the content of the news.
 - the `time` identifies the publised time of the news.
 
-### Relevant Articles
+### Fact-checking Articles
 
-The relevant articles are saved in `articles/articles.json`. In the file:
+The fact-checking articles are saved in `articles/articles.json`. In the file:
 
 - the `_id` (if exists) identifies the unique id of the article.
 - the `time` and `time_format` (if exists) identifies the publised time of the article.
-- the `content` identifies the content of the article.
-- the `content_all` TODO!!!!!!
+- the `content_all` identifies the content of the article, which is organized as sentences' list.
