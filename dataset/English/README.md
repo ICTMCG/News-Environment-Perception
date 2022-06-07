@@ -2,7 +2,7 @@
 
 ## Access
 
-You will be shared the dataset by email after an ["Application to Use the Datasets for XXXXXX"]() has been submitted.
+You will be shared the dataset by email after an["Application to Use the Datasets for News Environment Perceived Fake News Detection"](https://forms.office.com/r/Tr6FMGQJt0) has been submitted.
 
 ## Description
 
@@ -21,7 +21,7 @@ The news environment items are saved in `news/news.json`. In the file:
 - the `date` identifies the publised time of the news.
 - the `content` identifies the content of the news.
 
-### Relevant Articles
+### Fact-checking Articles
 
 The relevant articles are saved in `articles/articles.json`. In the file:
 

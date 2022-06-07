@@ -1,4 +1,3 @@
-from operator import mod
 import os
 import time
 from tqdm import tqdm
@@ -19,11 +18,8 @@ from torch.optim import AdamW, lr_scheduler
 
 from config import parser
 from evaluate import evaluate
-from utils import calculate_env_loss, LOSS_KEYS
 
 from DatasetLoader import DatasetLoader
-from ModelBasedOnPattern import BERT, MLP
-from NewsEnvExtraction import SimValueFeatures, SimValueKernelFeatures
 from ModelFramework import EnvEnhancedFramework
 
 
@@ -163,7 +159,7 @@ if __name__ == "__main__":
     if args.local_rank in [-1, 0]:
         print('Start training...')
 
-    # 记录验证集上的最好结果，只保存最好(评判结果是macro f1-score)的epoch
+    # Best results on validation dataset
     best_val_result = 0
     best_val_epoch = -1
 
@@ -177,9 +173,6 @@ if __name__ == "__main__":
         model.train()
 
         train_loss = 0.
-        train_CEloss = 0.
-        train_macro_env_loss = 0.
-        train_micro_env_loss = 0.
 
         lr = optimizer.param_groups[0]['lr']
         print_step = int(len(train_loader) / 20)
@@ -203,33 +196,16 @@ if __name__ == "__main__":
                     event_loss = args.eann_weight_of_event_loss * event_loss
                     CEloss += event_loss
 
-                # In-batch Learning
-                macro_env_loss = torch.tensor(0., device=args.device)
-                micro_env_loss = torch.tensor(0., device=args.device)
-                if args.use_news_env and args.in_batch_learning:
-                    macro_env_loss = calculate_env_loss(h_E=h_mac, y=labels)
-                    micro_env_loss = calculate_env_loss(h_E=h_mic, y=labels)
-
-                CEloss *= args.weight_of_CELoss
-                macro_env_loss *= args.weight_of_macro_loss
-                micro_env_loss *= args.weight_of_micro_loss
-                loss = CEloss + macro_env_loss + micro_env_loss
+                loss = CEloss
 
                 if torch.any(torch.isnan(loss)):
                     print('out: ', out)
                     print('loss = {:.4f}\n'.format(loss.item()))
-                    print('CEloss: {:.4f}'.format(CEloss.item()))
-                    print('MacroEnv Loss: {:.4f}'.format(
-                        macro_env_loss.item()))
-                    print('MicroEnv Loss: {:.4f}'.format(
-                        micro_env_loss.item()))
                     exit()
 
                 if step % print_step == 0:
-                    # exit()
-                    # print('out: ', out)
-                    print('\n\nEpoch: {}, Step: {}, CELoss = {:.4f}, Macro Env Loss= {:.4f}, Micro Env Loss = {:.4f}'.format(
-                        epoch, step, CEloss.item(), macro_env_loss.item(), micro_env_loss.item()))
+                    print('\n\nEpoch: {}, Step: {}, CELoss = {:.4f}'.format(
+                        epoch, step, CEloss.item()))
 
             if args.fp16:
                 scaler.scale(loss).backward()
@@ -240,27 +216,18 @@ if __name__ == "__main__":
                 optimizer.step()
 
             train_loss += loss.item()
-            train_CEloss += CEloss.item()
-            train_macro_env_loss += macro_env_loss.item()
-            train_micro_env_loss += micro_env_loss.item()
-
             args.global_step += 1
 
-        train_losses = dict(zip(LOSS_KEYS, [
-                            train_loss, train_CEloss, train_macro_env_loss, train_micro_env_loss]))
-        train_losses = {k: v/len(train_loader)
-                        for k, v in train_losses.items()}
-
-        val_losses, val_result = evaluate(
+        train_loss /= len(train_loader)
+        val_loss, val_result = evaluate(
             args, val_loader, model, criterion, 'val')
-        test_losses, test_result = evaluate(
+        test_loss, test_result = evaluate(
             args, test_loader, model, criterion, 'test')
 
         print('='*10, 'Epoch: {}/{}'.format(epoch, args.epochs),
               'lr: {}'.format(lr), '='*10)
-        for loss_key in LOSS_KEYS:
-            print('\n[{}]\nTrain: {:.6f}\tVal: {:.6f}\tTest: {:.6f}'.format(
-                loss_key, train_losses[loss_key], val_losses[loss_key], test_losses[loss_key]))
+        print('\n[Loss]\nTrain: {:.6f}\tVal: {:.6f}\tTest: {:.6f}'.format(
+            train_loss, val_loss, test_loss))
         print('-'*10)
         print('\n[Macro F1]\nVal: {:.6f}\tTest: {:.6f}\n'.format(
             val_result, test_result))

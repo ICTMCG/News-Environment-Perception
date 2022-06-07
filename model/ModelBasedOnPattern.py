@@ -20,7 +20,7 @@ class BiLSTM(nn.Module):
         self.hidden_size = args.bilstm_hidden_dim
 
         weight = torch.load(
-            '../preprocess/tokenize_words/data/{}/embedding_weight.pt'.format(args.dataset))
+            '../preprocess/WordEmbeddings/data/{}/embedding_weight.pt'.format(args.dataset))
         weight.to(args.device)
         self.embedding = nn.Embedding.from_pretrained(weight)
 
@@ -171,7 +171,7 @@ class TextCNN(nn.Module):
             filter_num * len(window_sizes), self.hidden_dim)
 
         weight = torch.load(
-            '../preprocess/tokenize_words/data/{}/embedding_weight.pt'.format(args.dataset))
+            '../preprocess/WordEmbeddings/data/{}/embedding_weight.pt'.format(args.dataset))
         weight.to(args.device)
         self.embedding = nn.Embedding.from_pretrained(weight)
 

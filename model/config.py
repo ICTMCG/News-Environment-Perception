@@ -39,24 +39,11 @@ parser.add_argument('--save', type=str, default='./ckpts/debug',
                     help='folder to save the final model')
 
 parser.add_argument('--model', type=str,
-                    help='[BERT, MLP, TextCNN, BiLSTM, EANN, DeClarE, MAC]')
+                    help='[BERT, BiLSTM, EANN, DeClarE, MAC]')
 
 # ======================== Framework ========================
 
 parser.add_argument('--use_fake_news_detector', type=str2bool, default=True)
-
-# --- BERT ---
-parser.add_argument('--bert_pretrained_model',
-                    type=str, default='bert-base-chinese', help='[bert-base-chinese, bert-base-uncased]')
-parser.add_argument('--bert_input_max_sequence_length',
-                    type=int, default=MAX_TOKENS_OF_A_POST)
-parser.add_argument('--bert_training_embedding_layers',
-                    type=str2bool, default=True)
-parser.add_argument('--bert_training_inter_layers',
-                    type=str2bool, default=True)
-parser.add_argument('--bert_hidden_dim', type=int, default=768)
-parser.add_argument('--bert_use_emotion', type=str2bool, default=False)
-parser.add_argument('--bert_emotion_features_dim', type=int, default=0)
 
 # --- MLP ---
 parser.add_argument('--num_mlp_layers', type=int, default=3)
@@ -72,14 +59,13 @@ parser.add_argument('--use_similarity_of_news_env',
 parser.add_argument('--macro_env_days', type=int, default=3)
 parser.add_argument('--micro_env_rate', type=float, default=0.1)
 parser.add_argument('--micro_env_min_num', type=int, default=10)
-parser.add_argument('--macro_env_output_dim', type=int, default=512)
-parser.add_argument('--micro_env_output_dim', type=int, default=512)
+parser.add_argument('--macro_env_output_dim', type=int, default=128)
+parser.add_argument('--micro_env_output_dim', type=int, default=128)
 
-# --- 与FEND的特征拼接策略 ---
+# --- Fusion with the detection features ---
 parser.add_argument('--strategy_of_fusion', type=str,
-                    default='concat', help=['concat', 'att', 'gate'])
-# parser.add_argument('--news_env_output_dim', type=int, default=768)
-parser.add_argument('--multi_attention_dim', type=int, default=768)
+                    default='gate', help=['concat', 'att', 'gate'])
+parser.add_argument('--multi_attention_dim', type=int, default=128)
 
 # --- Sim Values MLP ---
 parser.add_argument('--use_p_mac', type=str2bool, default=True)
@@ -87,15 +73,6 @@ parser.add_argument('--use_p_mic', type=str2bool, default=True)
 parser.add_argument('--use_avgmic_mic', type=str2bool, default=True)
 
 parser.add_argument('--sim_values_output_dim', type=int, default=512)
-
-# --- In-batch Learning ---
-parser.add_argument('--in_batch_learning', type=str2bool, default=False)
-parser.add_argument('--weight_of_CELoss', type=float,
-                    default=1.0, help='alpha')
-parser.add_argument('--weight_of_macro_loss',
-                    type=float, default=1.0, help='beta')
-parser.add_argument('--weight_of_micro_loss',
-                    type=float, default=1.0, help='gama')
 
 
 # ======================== Pattern-based Models ========================
@@ -115,6 +92,19 @@ parser.add_argument('--eann_input_dim', type=int, default=300)
 parser.add_argument('--eann_hidden_dim', type=int, default=64)
 parser.add_argument('--eann_event_num', type=int, default=300)
 parser.add_argument('--eann_weight_of_event_loss', type=float, default=-1.0)
+
+# --- BERT ---
+parser.add_argument('--bert_pretrained_model',
+                    type=str, default='bert-base-chinese', help='[bert-base-chinese, bert-base-uncased]')
+parser.add_argument('--bert_input_max_sequence_length',
+                    type=int, default=MAX_TOKENS_OF_A_POST)
+parser.add_argument('--bert_training_embedding_layers',
+                    type=str2bool, default=True)
+parser.add_argument('--bert_training_inter_layers',
+                    type=str2bool, default=True)
+parser.add_argument('--bert_hidden_dim', type=int, default=768)
+parser.add_argument('--bert_use_emotion', type=str2bool, default=False)
+parser.add_argument('--bert_emotion_features_dim', type=int, default=0)
 
 # ======================== Fact-based Models ========================
 

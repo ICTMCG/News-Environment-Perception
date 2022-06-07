@@ -1,0 +1,80 @@
+dataset	Chinese
+category_num	2
+save	ckpts/Chinese/BiLSTM_false
+model	BiLSTM
+use_fake_news_detector	True
+num_mlp_layers	3
+use_news_env	False
+use_macro_env	True
+use_micro_env	True
+use_semantics_of_news_env	True
+use_similarity_of_news_env	True
+macro_env_days	3
+micro_env_rate	0.1
+micro_env_min_num	10
+macro_env_output_dim	128
+micro_env_output_dim	128
+strategy_of_fusion	gate
+multi_attention_dim	128
+use_p_mac	True
+use_p_mic	True
+use_avgmic_mic	True
+sim_values_output_dim	512
+bilstm_input_max_sequence_length	128
+bilstm_input_dim	300
+bilstm_hidden_dim	64
+bilstm_num_layer	1
+bilstm_dropout	0
+eann_input_max_sequence_length	128
+eann_input_dim	300
+eann_hidden_dim	64
+eann_event_num	300
+eann_weight_of_event_loss	-1.0
+bert_pretrained_model	bert-base-chinese
+bert_input_max_sequence_length	256
+bert_training_embedding_layers	True
+bert_training_inter_layers	True
+bert_hidden_dim	768
+bert_use_emotion	False
+bert_emotion_features_dim	0
+retrieve_ideally	False
+relevant_articles_num	5
+mac_input_max_sequence_length	128
+mac_max_doc_length	100
+mac_input_dim	300
+mac_hidden_dim	32
+mac_dropout_doc	0.7
+mac_dropout_query	0.1
+mac_nhead_1	2
+mac_nhead_2	2
+declare_input_max_sequence_lengtdh	128
+declare_input_dim	300
+declare_hidden_dim	64
+declare_max_doc_length	100
+declare_bilstm_num_layer	1
+declare_bilstm_dropout	0.1
+lr	0.0005
+epochs	50
+batch_size	32
+start_epoch	0
+resume	
+evaluate	False
+inference_analysis	False
+debug	False
+seed	9
+device	cuda
+fp16	True
+local_rank	-1
+n_gpu	1
+
+EnvEnhancedFramework(
+  (fake_news_detector): BiLSTM(
+    (embedding): Embedding(195198, 300)
+    (lstm): LSTM(300, 64, batch_first=True, bidirectional=True)
+  )
+  (fcs): ModuleList(
+    (0): Linear(in_features=128, out_features=64, bias=True)
+    (1): Linear(in_features=64, out_features=32, bias=True)
+    (2): Linear(in_features=32, out_features=2, bias=True)
+  )
+)

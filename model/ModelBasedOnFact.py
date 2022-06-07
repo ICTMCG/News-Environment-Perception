@@ -19,7 +19,7 @@ class DeClarE(nn.Module):
         self.hidden_size = args.declare_hidden_dim
 
         weight = torch.load(
-            '../preprocess/tokenize_words/data/{}/article/embedding_weight.pt'.format(args.dataset))
+            '../preprocess/WordEmbeddings/data/{}/article/embedding_weight.pt'.format(args.dataset))
         weight.to(args.device)
         self.embedding = nn.Embedding.from_pretrained(weight)
 
@@ -160,7 +160,7 @@ class MAC(nn.Module):
         self.num_layers = 1
         
         weight = torch.load(
-            '../preprocess/tokenize_words/data/{}/article/embedding_weight.pt'.format(args.dataset))
+            '../preprocess/WordEmbeddings/data/{}/article/embedding_weight.pt'.format(args.dataset))
         weight.to(args.device)
         self.embedding = nn.Embedding.from_pretrained(weight)
 

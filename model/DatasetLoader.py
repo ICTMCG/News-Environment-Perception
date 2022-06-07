@@ -22,7 +22,7 @@ class DatasetLoader(Dataset):
             pieces = json.load(f)
 
         if args.model == 'BERT':
-            tokens_file = '../preprocess/tokenize/data/{}/{}.pkl'.format(
+            tokens_file = '../preprocess/BERT/data/{}/{}.pkl'.format(
                 self.args.dataset, split_set)
 
             # Emotion Features
@@ -35,7 +35,7 @@ class DatasetLoader(Dataset):
                     emotions_file, self.emotion_features.shape))
 
         else:
-            tokens_file = '../preprocess/tokenize_words/data/{}/{}.pkl'.format(
+            tokens_file = '../preprocess/WordEmbeddings/data/{}/{}.pkl'.format(
                 self.args.dataset, split_set)
 
             # Event Labels
@@ -79,7 +79,7 @@ class DatasetLoader(Dataset):
         print('\nInit News Env...')
         t = time.time()
 
-        tmp_data_dir = '../preprocess/SimCSE/data/{}/_tmp/'.format(
+        tmp_data_dir = '../preprocess/NewsEnv/data/{}/_tmp/'.format(
             self.args.dataset)
         if not os.path.exists(tmp_data_dir):
             os.mkdir(tmp_data_dir)
@@ -139,7 +139,7 @@ class DatasetLoader(Dataset):
             post_vecs_file, post_vecs.shape, news_vecs_file, news_vecs.shape))
 
         # Calculation
-        post_env_file = '../preprocess/SimCSE/data/{}/post-env/{}_data_{}d.pkl'.format(
+        post_env_file = '../preprocess/NewsEnv/data/{}/{}_data_{}d.pkl'.format(
             dataset, split_set, self.macro_env_days)
         with open(post_env_file, 'rb') as f:
             post_env_pairs = pickle.load(f)
@@ -217,7 +217,7 @@ class DatasetLoader(Dataset):
     def init_articles(self):
         doc_num = self.args.relevant_articles_num
 
-        article_tokens_file = '../preprocess/tokenize_words/data/{}/article/article.pkl'.format(
+        article_tokens_file = '../preprocess/WordEmbeddings/data/{}/article/article.pkl'.format(
             self.args.dataset)
         with open(article_tokens_file, 'rb') as f:
             article_tokens = pickle.load(f)

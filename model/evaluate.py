@@ -8,7 +8,6 @@ import json
 import os
 import torch
 from config import INDEX2LABEL, INDEX_OF_LABEL, MAX_TOKENS_OF_A_POST
-from utils import calculate_env_loss, LOSS_KEYS
 
 
 def compute_classification_metrics(ans, pred, category_num=2):
@@ -30,7 +29,7 @@ def eval_when_training_on_single_gpu(outputs_file, dataset):
     outputs = out
 
     for o in outputs:
-        # o: [idx, 0_class_score, 1_class_score, 2_class_score]
+        # o: [idx, 0_class_score, 1_class_score]
         idx, scores = o[0], np.array(o[1:])
         pred = int(scores.argmax())
         ans = int(gt[idx])
@@ -62,9 +61,6 @@ def evaluate(args, loader, model, criterion, dataset_type, inference_analysis=Fa
     model.eval()
 
     eval_loss = 0.
-    eval_CEloss = 0.
-    eval_macro_env_loss = 0.
-    eval_micro_env_loss = 0.
 
     outputs = []
     env_weights = []
@@ -100,22 +96,8 @@ def evaluate(args, loader, model, criterion, dataset_type, inference_analysis=Fa
                 event_loss = args.eann_weight_of_event_loss * event_loss
                 CEloss += event_loss
 
-            # In-batch Learning
-            macro_env_loss = torch.tensor(0., device=args.device)
-            micro_env_loss = torch.tensor(0., device=args.device)
-            if args.use_news_env and args.in_batch_learning:
-                macro_env_loss = calculate_env_loss(h_E=h_mac, y=labels)
-                micro_env_loss = calculate_env_loss(h_E=h_mic, y=labels)
-
-            CEloss *= args.weight_of_CELoss
-            macro_env_loss *= args.weight_of_macro_loss
-            micro_env_loss *= args.weight_of_micro_loss
-            loss = CEloss + macro_env_loss + micro_env_loss
-
+            loss = CEloss
             eval_loss += loss.item()
-            eval_CEloss += CEloss.item()
-            eval_macro_env_loss += macro_env_loss.item()
-            eval_micro_env_loss += micro_env_loss.item()
 
             score = [[idxs[i].item()] + x for i,
                      x in enumerate(out.cpu().numpy().tolist())]
@@ -127,9 +109,7 @@ def evaluate(args, loader, model, criterion, dataset_type, inference_analysis=Fa
 
             outputs += score
 
-        eval_losses = dict(zip(
-            LOSS_KEYS, [eval_loss, eval_CEloss, eval_macro_env_loss, eval_micro_env_loss]))
-        eval_losses = {k: v/len(loader) for k, v in eval_losses.items()}
+        eval_loss /= len(loader)
 
     file = os.path.join(args.save, dataset_type +
                         '_outputs_' + str(args.current_epoch) + '.json')
@@ -140,10 +120,10 @@ def evaluate(args, loader, model, criterion, dataset_type, inference_analysis=Fa
         with open(file.replace('_outputs_', '_env_weights_'), 'w') as f:
             json.dump(env_weights, f, indent=4, ensure_ascii=False)
         with open(file.replace('_outputs_', '_env_weights_raw_'), 'w') as f:
-            json.dump(raw_weights, f, indent=4, ensure_ascii=False) 
+            json.dump(raw_weights, f, indent=4, ensure_ascii=False)
 
     # Macro F1 score
     classification_metrics = eval_when_training_on_single_gpu(
         file, loader.dataset)
 
-    return eval_losses, classification_metrics
+    return eval_loss, classification_metrics
