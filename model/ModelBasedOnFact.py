@@ -22,6 +22,7 @@ class DeClarE(nn.Module):
             '../preprocess/WordEmbeddings/data/{}/article/embedding_weight.pt'.format(args.dataset))
         weight.to(args.device)
         self.embedding = nn.Embedding.from_pretrained(weight)
+        self.D = weight.shape[1]
 
         self.Wa = nn.Linear(self.D * 2, 1)
 
@@ -163,6 +164,7 @@ class MAC(nn.Module):
             '../preprocess/WordEmbeddings/data/{}/article/embedding_weight.pt'.format(args.dataset))
         weight.to(args.device)
         self.embedding = nn.Embedding.from_pretrained(weight)
+        self.input_dim = weight.shape[1]
 
         self.doc_bilstm = nn.LSTM(self.input_dim, self.hidden_size, self.num_layers,
                                   bidirectional=True, batch_first=True, dropout=self.dropout_doc)

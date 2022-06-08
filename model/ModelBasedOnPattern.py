@@ -24,7 +24,7 @@ class BiLSTM(nn.Module):
         weight.to(args.device)
         self.embedding = nn.Embedding.from_pretrained(weight)
 
-        self.lstm = nn.LSTM(args.bilstm_input_dim, self.hidden_size, self.num_layers,
+        self.lstm = nn.LSTM(weight.shape[1], self.hidden_size, self.num_layers,
                             bidirectional=True, batch_first=True, dropout=args.bilstm_dropout)
         self.last_output = self.hidden_size * 2
 
@@ -157,23 +157,23 @@ class TextCNN(nn.Module):
 
         self.args = args
 
-        self.input_dim = args.eann_input_dim  # 768 if using BERT embedding
+        self.input_dim = args.eann_input_dim
         self.hidden_dim = args.eann_hidden_dim  # 64
         self.max_sequence_length = args.eann_input_max_sequence_length
+
+        weight = torch.load(
+            '../preprocess/WordEmbeddings/data/{}/embedding_weight.pt'.format(args.dataset))
+        weight.to(args.device)
+        self.embedding = nn.Embedding.from_pretrained(weight)
 
         # TextCNN
         channel_in = 1
         filter_num = 20
         window_sizes = [1, 2, 3, 4]
         self.convs = nn.ModuleList(
-            [nn.Conv2d(channel_in, filter_num, (K, self.input_dim)) for K in window_sizes])
+            [nn.Conv2d(channel_in, filter_num, (K, weight.shape[1])) for K in window_sizes])
         self.fc_cnn = nn.Linear(
             filter_num * len(window_sizes), self.hidden_dim)
-
-        weight = torch.load(
-            '../preprocess/WordEmbeddings/data/{}/embedding_weight.pt'.format(args.dataset))
-        weight.to(args.device)
-        self.embedding = nn.Embedding.from_pretrained(weight)
 
         self.last_output = self.hidden_dim
 

@@ -19,7 +19,7 @@ def load_embeddings(embeddings_file):
         lines = f.readlines()
         lines = [l.strip() for l in lines]
 
-        lines = lines if dataset == 'Twitter' else lines[1:]
+        lines = lines if dataset == 'English' else lines[1:]
 
         for line in lines:
             word, coefs = line.split(maxsplit=1)
