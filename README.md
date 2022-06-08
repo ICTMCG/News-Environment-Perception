@@ -1,9 +1,5 @@
 # News Environment Perception
 
-**[Notes]** The repo may be incomplete and some of the code is a bit messy. We will improve in the near future. Readme will also include more details. Coming soon stay tuned :)
-
----
-
 This is the official repository of the paper:
 
 > **Zoom Out and Observe: News Environment Perception for Fake News Detection**
@@ -16,7 +12,7 @@ This is the official repository of the paper:
 
 # Datasets
 
-The experimental datasets where can be seen in `dataset` folder, including the [Chinese Dataset](https://github.com/ICTMCG/News-Environment-Perception/tree/main/dataset/Chinese), and the [English Dataset](https://github.com/ICTMCG/News-Environment-Perception/tree/main/dataset/English). Note that you can download the datasets only after an ["Application to Use the Datasets for XXXXXX"]() has been submitted.
+The experimental datasets where can be seen in `dataset` folder, including the [Chinese Dataset](https://github.com/ICTMCG/News-Environment-Perception/tree/main/dataset/Chinese), and the [English Dataset](https://github.com/ICTMCG/News-Environment-Perception/tree/main/dataset/English). Note that you can download the datasets only after an ["Application to Use the Datasets for News Environment Perceived Fake News Detection"](https://forms.office.com/r/Tr6FMGQJt0) has been submitted.
 
 # Code
 
@@ -150,7 +146,10 @@ sh run.sh
 
 #### Fact-checking Articles
 
-Firstly, tokenize the fact-checking articles (by word embeddings, for DeClarE and MAC):
+There are two preparation for fact-checking articles:
+
+1. **Retrieve the most relevant articles for every post**. Specifically, we have retrieved every post's Top10 relevant articles that should be published BEFORE the post, whose results are saved in the `preprocess/BM25/data` folder. If you want to learn about more implementation details, just refer to `preprocess/BM25/[dataset].ipynb`.
+2. **Tokenize the fact-checking articles by word embeddings**:
 
 ```
 cd preprocess/WordEmbeddings
@@ -159,9 +158,16 @@ cd preprocess/WordEmbeddings
 sh run.sh
 ```
 
-Then, retrieve the most relevant 10 articles for every post (these 10 articles should be published BEFORE the post) by BM25 algorithm. Note that we have shared the retrieved results in the `preprocess/BM25/data` folder. If you want to learn about more implementation details, just refer to `preprocess/BM25/[dataset].ipynb`.
-
 ## Training and Inferring
+
+```
+cd model
+
+# Configure the dataset and the parameters of the model
+sh run.sh
+```
+
+After that, the results and classification reports will be saved in `ckpts/[dataset]/[model]`.
 
 # Citation
 
