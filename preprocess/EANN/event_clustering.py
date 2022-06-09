@@ -54,8 +54,8 @@ if __name__ == '__main__':
     weight = tfidf.toarray()
     print(len(word), weight.shape)
 
-    with open('data/{}/TFIDF.pkl'.format(experimental_dataset), 'wb') as f:
-        pickle.dump([word, weight], f)
+    # with open('data/{}/TFIDF.pkl'.format(experimental_dataset), 'wb') as f:
+    #     pickle.dump([word, weight], f)
 
     # ============= Kmeans =============
     clf = KMeans(events_num, verbose=True)
