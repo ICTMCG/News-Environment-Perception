@@ -171,6 +171,8 @@ After that, the results and classification reports will be saved in `ckpts/[data
 
 # Citation
 
+If you find our dataset and code are helpful, please cite the following ACL 2022 paper:
+
 ```
 @inproceedings{NEP,
     title = "Zoom Out and Observe: News Environment Perception for Fake News Detection",
@@ -184,5 +186,25 @@ After that, the results and classification reports will be saved in `ckpts/[data
     month = may,
     year = "2022",
     publisher = "Association for Computational Linguistics"
+}
+```
+
+And as the HuffPost part of the English news environment is based on the News Category Dataset, please cite the following reports as the kaggle page requires:
+
+```
+@dataset{misra2018news,
+  title={News Category Dataset},
+  author={Misra, Rishabh},
+  year = {2018},
+  month = {06},
+  doi = {10.13140/RG.2.2.20331.18729}
+}
+@book{misra2021sculpting,
+  author = {Misra, Rishabh and Grover, Jigyasa},
+  year = {2021},
+  month = {01},
+  pages = {},
+  title = {Sculpting Data for ML: The first act of Machine Learning},
+  isbn = {9798585463570}
 }
 ```
