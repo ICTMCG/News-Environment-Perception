@@ -12,7 +12,7 @@ This is the official repository of the paper:
 
 # Datasets
 
-The experimental datasets where can be seen in `dataset` folder, including the [Chinese Dataset](https://github.com/ICTMCG/News-Environment-Perception/tree/main/dataset/Chinese), and the [English Dataset](https://github.com/ICTMCG/News-Environment-Perception/tree/main/dataset/English). Note that you can download the datasets only after an ["Application to Use the Datasets for News Environment Perceived Fake News Detection"](https://forms.office.com/r/Tr6FMGQJt0) has been submitted.
+The experimental datasets where can be seen in `dataset` folder, including the [Chinese Dataset](https://github.com/ICTMCG/News-Environment-Perception/tree/main/dataset/Chinese), and the [English Dataset](https://github.com/ICTMCG/News-Environment-Perception/tree/main/dataset/English). Note that you can download the datasets only after an ["Application to Use the Datasets for News Environment Perceived Fake News Detection"](https://forms.office.com/r/QrkcNKuMLB) has been submitted.
 
 # Code
 
